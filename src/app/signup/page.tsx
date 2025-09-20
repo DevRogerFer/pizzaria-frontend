@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from "next/image"
+import Link from "next/link"
 import styles from '../page.module.scss'
 import logoImg from '/public/logo.svg'
 import {api} from '@/services/api'
