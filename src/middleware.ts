@@ -10,8 +10,6 @@ export async function middleware(req: NextRequest) {
     }
     
     const token = await getCookieServer();    
-
-    //console.log("Token do Middleware: ", token);
     
     if (pathname.startsWith("/dashboard")) {
         if (!token) {
