@@ -5,20 +5,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import logoImg from '/public/logo.svg'
 import { LogOutIcon } from 'lucide-react'
-import { deleteCookie } from 'cookies-next'
-import { useRouter } from 'next/navigation'
+// import { deleteCookie } from 'cookies-next'
+// import { useRouter } from 'next/navigation'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
+import { toast } from 'sonner'
 
 export function Header() {
     //const router = useRouter();
-
     async function handleLogout() {
         'use server'
         //deleteCookie("session", { path: "/" })
         const cookieStore = await cookies();
         cookieStore.delete("session")
-    
+        //toast.success('Logout realizado com sucesso!')
         redirect("/")
         //router.replace("/")
     }

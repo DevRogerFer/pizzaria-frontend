@@ -6,8 +6,9 @@ import Image from 'next/image'
 import { Button } from '@/app/dashboard/components/button'
 import { api } from '@/services/api'
 import { getCookieClient } from '@/lib/cookieClient'
-import { getCookieServer } from '@/lib/cookieServer'
-import { headers } from 'next/headers'
+import { toast } from 'sonner'
+import { redirect } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 interface CategoryProps{
     id: string;
@@ -19,6 +20,7 @@ interface Props{
 }
 
 export function Form({categories}: Props) {
+    //const router = useRouter();
     const [image, setImage] = useState<File>()
     const [previewImage, setPreviewImage] = useState("")
 
@@ -30,6 +32,7 @@ export function Form({categories}: Props) {
         const description = formData.get('description')
 
         if (!name || !categoryIndex || !price || !description || !image) {
+            toast.warning('Preencha todos os campos!')
             return
         }
 
@@ -50,10 +53,13 @@ export function Form({categories}: Props) {
         })
         .catch((err) => {
             console.log(err);
+            toast.warning('Erro ao cadastrar o produto!')            
             return;
         })        
 
-        console.log('CADASTRADO COM SUCESSO')
+        toast.success('Produto cadastrado com sucesso!')
+        //router.push('/dashboard')
+        redirect("/dashboard")
     }
 
     function handleFile(e: ChangeEvent<HTMLInputElement>) {
@@ -61,7 +67,7 @@ export function Form({categories}: Props) {
             const image = e.target.files[0];
 
             if(image.type !== 'image/jpeg' && image.type !== 'image/png') {
-                console.log('Tipo de arquivo inválido. Aceitamos apenas PNG e JPEG.');
+                toast.warning('Tipo de arquivo inválido. Aceitamos apenas PNG e JPEG.');
                 return;
             }
 

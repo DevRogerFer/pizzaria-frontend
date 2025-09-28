@@ -16,7 +16,8 @@
     "next": "^15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "sass": "^1.90.0"
+    "sass": "^1.90.0",
+    "sonner": "^2.0.7"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
