@@ -4,7 +4,8 @@ import styles from './styles.module.scss'
 import { X } from 'lucide-react'
 import { use } from 'react'
 import { OrderContext } from '@/providers/order'
-import { calculateTotalOrder } from '@/lib/helper' 
+import { calculateTotalOrder } from '@/lib/helper'
+import Image from 'next/image'
 
 export function ModalOrder() {
     const { onRequestClose, order, finishOrder } = use(OrderContext);
@@ -33,6 +34,12 @@ export function ModalOrder() {
 
                     {order.map(item => (
                         <section className={styles.item} key={item.id}>
+                            <Image
+                                src={item.product.banner}
+                                alt='Imagem do produto'
+                                width={50}
+                                height={50}
+                            />
                             <span>
                                 <b>QTD: {item.amount} - {item.product.name}</b> - R$ {item.amount * parseFloat(item.product.price)}
                             </span>

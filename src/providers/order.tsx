@@ -5,6 +5,7 @@ import { api } from '@/services/api'
 import { getCookieClient } from '@/lib/cookieClient'
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { getBearerToken } from '@/lib/getBearerToken'
 
 export interface OrderItemProps {
     id: string;
@@ -49,7 +50,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
     const router = useRouter();
 
     async function onRequestOpen(order_id: string) {
-        const token = await getCookieClient();
+        const token = await getBearerToken();
         const response = await api.get('/order/detail', {
             headers: {
                 Authorization: `Bearer ${token}`

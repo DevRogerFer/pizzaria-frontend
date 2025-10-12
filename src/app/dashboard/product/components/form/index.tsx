@@ -1,14 +1,15 @@
 'use client'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState, useEffect } from 'react'
 import styles from './styles.module.scss'
 import { UploadCloud } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/app/dashboard/components/button'
 import { api } from '@/services/api'
-import { getCookieClient } from '@/lib/cookieClient'
 import { toast } from 'sonner'
 import { redirect } from 'next/navigation'
-import { useRouter } from 'next/router'
+import { getCookieClient } from '@/lib/cookieClient'
+import Cookies from 'js-cookie';
+import { getBearerToken } from '@/lib/getBearerToken'
 
 interface CategoryProps{
     id: string;
@@ -19,13 +20,14 @@ interface Props{
     categories: CategoryProps[]
 }
 
+
 export function Form({categories}: Props) {
-    //const router = useRouter();
+
     const [image, setImage] = useState<File>()
     const [previewImage, setPreviewImage] = useState("")
-
+    
     async function handleRegisterProduct(formData: FormData) {
-
+        
         const categoryIndex = formData.get('category')
         const name = formData.get('name')
         const price = formData.get('price')
@@ -35,39 +37,45 @@ export function Form({categories}: Props) {
             toast.warning('Preencha todos os campos!')
             return
         }
-
-         const data = new FormData();
+        
+        const data = new FormData();
         
         data.append("name", name);
         data.append("price", price);
         data.append("description", description);
         data.append("category_id", categories[Number(categoryIndex)].id)
         data.append("file", image);
-    
-        const token = await getCookieClient();
-
+        
+        const token = await getBearerToken();
+        
+        console.log(token)
+        
         await api.post('/product', data, {
             headers:{
                 Authorization: `Bearer ${token}`
             }
-        })
+        })   
+             
         .catch((err) => {
             console.log(err);
-            toast.warning('Erro ao cadastrar o produto!')            
+            toast.warning('Falha ao cadastrar o produto!')       
             return;
-        })        
+        })
 
         toast.success('Produto cadastrado com sucesso!')
+        
         //router.push('/dashboard')
         redirect("/dashboard")
     }
+    
 
     function handleFile(e: ChangeEvent<HTMLInputElement>) {
+        'use client'
         if (e.target.files && e.target.files[0]) {
             const image = e.target.files[0];
 
             if(image.type !== 'image/jpeg' && image.type !== 'image/png') {
-                toast.warning('Tipo de arquivo inválido. Aceitamos apenas PNG e JPEG.');
+                toast.warning('Tipo de arquivo inválido! Apenas PNG e JPEG!');
                 return;
             }
 
@@ -141,3 +149,4 @@ export function Form({categories}: Props) {
         </main>
     )
 }
+

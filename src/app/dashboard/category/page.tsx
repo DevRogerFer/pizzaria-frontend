@@ -1,8 +1,9 @@
 import styles from './styles.module.scss'
 import { Button } from '@/app/dashboard/components/button'
 import { api } from '@/services/api'
-import { getCookieServer } from '@/lib/cookieServer'
 import { redirect } from 'next/navigation'
+import { toast } from 'sonner'
+import { getCookieServer } from '@/lib/cookieServer'
 
 export default function Category() {
 
@@ -10,7 +11,10 @@ export default function Category() {
         'use server'
 
         const name = formData.get('name')
-        if(!name) return;
+        if(!name) {
+            toast.warning('Preencha o nome da categoria!')
+            return;
+        }
 
         const data = {
             name: name,
@@ -27,10 +31,10 @@ export default function Category() {
             console.log(err);
             return;
         })
-
+        console.log('Categoria cadastrada com sucesso!')
         redirect('/dashboard')
     }
-
+   
     return (
         <main className={styles.container}>
             <h1>Nova Categoria</h1>
