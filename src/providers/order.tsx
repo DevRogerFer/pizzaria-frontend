@@ -69,7 +69,7 @@ export function OrderProvider({ children }: OrderProviderProps) {
     }
 
     async function finishOrder(order_id: string) {
-        const token = await getCookieClient();
+        const token = await getBearerToken();
         const data = {
             order_id: order_id,
         }
